@@ -1,0 +1,23 @@
+{
+  "name": "@steffbeckers/cosy-whatsapp-poll-sender",
+  "version": "1.0.0",
+  "description": "Cosy WhatsApp Poll Sender",
+  "main": "main.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/steffbeckers/cosy-whatsapp-poll-sender.git"
+  },
+  "author": "Steff Beckers <steff@steffbeckers.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/steffbeckers/cosy-whatsapp-poll-sender/issues"
+  },
+  "homepage": "https://github.com/steffbeckers/cosy-whatsapp-poll-sender#readme",
+  "dependencies": {
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.34.1"
+  }
+}
