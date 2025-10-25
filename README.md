@@ -1,1 +1,1 @@
-# Cosy WhatsApp Poll Sender
+# WhatsApp
