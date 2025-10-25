@@ -1,0 +1,9 @@
+.browser_cache/
+.dockerignore
+.env
+.git/
+.gitignore
+.wwebjs_cache/
+Dockerfile
+node_modules/
+README.md
