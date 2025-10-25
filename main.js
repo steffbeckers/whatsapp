@@ -3,6 +3,7 @@ const { Client, Poll } = require("whatsapp-web.js");
 const qrcode = require("qrcode-terminal");
 const { LocalAuth } = require("whatsapp-web.js");
 const { format, startOfTomorrow } = require("date-fns");
+const { nlBE } = require("date-fns/locale");
 
 const API_KEY = process.env.API_KEY ?? "secret";
 const COSY_POLL_CHAT_ID = process.env.COSY_POLL_CHAT_ID ?? "32499765192@c.us";
@@ -96,9 +97,10 @@ app.get("/send-cosy-poll", async (req, res) => {
 
     const message = await whatsApp.sendMessage(
       COSY_POLL_CHAT_ID,
-      new Poll(`Cosy Friday ${format(startOfTomorrow(), "dd/MM")}`, [
-        "Voor 19u aanwezig",
-        "Voor 20u aanwezig",
+      new Poll(`🔴 Cosy Friday ${format(startOfTomorrow(), "d LLLL", { locale: nlBE })}`, [
+        "✅ Voor 19u aanwezig",
+        "✅ Voor 20u aanwezig",
+        "❌ Niet aanwezig",
       ])
     );
 
