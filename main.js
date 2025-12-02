@@ -2,11 +2,9 @@ const express = require("express");
 const { Client, Poll } = require("whatsapp-web.js");
 const qrcode = require("qrcode-terminal");
 const { LocalAuth } = require("whatsapp-web.js");
-const { format, startOfTomorrow } = require("date-fns");
-const { nlBE } = require("date-fns/locale");
 
 const API_KEY = process.env.API_KEY ?? "secret";
-const COSY_POLL_CHAT_ID = process.env.COSY_POLL_CHAT_ID ?? "32499765192@c.us";
+const COZY_POLL_CHAT_ID = process.env.COZY_POLL_CHAT_ID ?? "32499765192@c.us";
 
 const app = express();
 app.use(express.json());
@@ -40,18 +38,22 @@ whatsApp.once("ready", async () => {
   isReady = true;
   console.log("WhatsApp is ready");
 
-  // await whatsApp.sendMessage(
+  // const message = await whatsApp.sendMessage(
   //   "32499765192@c.us",
-  //   new Poll(`Cosy Friday ${format(startOfTomorrow(), "dd/MM")}`, [
-  //     "Voor 19u aanwezig",
-  //     "Voor 20u aanwezig",
+  //   new Poll(`🔴⚫ Cozy Zunday (vanaf 17u)`, [
+  //     "Ik zal er voor 18u zijn",
+  //     "Ik zal er ten laatste om 19u zijn",
   //   ])
   // );
 
-  // // Get all chats
-  // const chats = await client.getChats();
+  // // https://www.calculator.net/time-duration-calculator.html?today=12%2F06%2F2025&starthour2=10&startmin2=00&startsec2=0&startunit2=a&ageat=12%2F07%2F2025&endhour2=10&endmin2=00&endsec2=0&endunit2=p&ctype=2&x=Calculate#twodates
+  // const pinDurationInSeconds = 129600;
+  // await message.pin(pinDurationInSeconds);
 
-  // // Filter individual chats
+  // Get all chats
+  // const chats = await whatsApp.getChats();
+
+  // Filter individual chats
   // const individuals = chats.filter((chat) => !chat.isGroup);
 
   // console.log(`Found ${individuals.length} individuals:`);
@@ -59,13 +61,16 @@ whatsApp.once("ready", async () => {
   //   console.log(`- ${individual.name} (${individual.id._serialized})`);
   // });
 
-  // // Filter group chats
+  // Filter group chats
   // const groups = chats.filter((chat) => chat.isGroup);
 
   // console.log(`Found ${groups.length} groups:`);
   // groups.forEach((group) => {
   //   console.log(`- ${group.name} (${group.id._serialized})`);
   // });
+
+  // const group = groups.filter((x) => x.id._serialized === "32479315864-1501838622@g.us")[0];
+  // console.log(group.lastMessage);
 });
 
 whatsApp.on("qr", (qr) => {
@@ -87,7 +92,7 @@ app.get("/", (req, res) => {
   res.json({ ready: isReady });
 });
 
-app.get("/send-cosy-poll", async (req, res) => {
+app.get("/send-cozy-poll", async (req, res) => {
   try {
     if (!isReady) {
       return res
@@ -96,15 +101,20 @@ app.get("/send-cosy-poll", async (req, res) => {
     }
 
     const message = await whatsApp.sendMessage(
-      COSY_POLL_CHAT_ID,
-      new Poll(`🔴 Cosy Friday ${format(startOfTomorrow(), "d LLLL", { locale: nlBE })}`, [
-        "✅ Voor 19u aanwezig",
-        "✅ Voor 20u aanwezig",
-        "❌ Niet aanwezig",
+      COZY_POLL_CHAT_ID,
+      new Poll(`🔴⚫ Cozy Zunday (vanaf 17u)`, [
+        "Ik zal er voor 18u zijn",
+        "Ik zal er ten laatste om 19u zijn",
       ])
     );
 
-    console.log("Cosy Friday poll sent");
+    console.log("Cozy Zunday poll sent");
+
+    // https://www.calculator.net/time-duration-calculator.html?today=12%2F06%2F2025&starthour2=10&startmin2=00&startsec2=0&startunit2=a&ageat=12%2F07%2F2025&endhour2=10&endmin2=00&endsec2=0&endunit2=p&ctype=2&x=Calculate#twodates
+    const pinDurationInSeconds = 129600;
+    await message.pin(pinDurationInSeconds);
+
+    console.log("Cozy Zunday poll pinned");
 
     res.json({
       status: "sent",
