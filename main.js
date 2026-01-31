@@ -4,7 +4,7 @@ const qrcode = require("qrcode-terminal");
 const { LocalAuth } = require("whatsapp-web.js");
 
 const API_KEY = process.env.API_KEY ?? "secret";
-const COZY_POLL_CHAT_ID = process.env.COZY_POLL_CHAT_ID ?? "32499765192@c.us";
+const COZY_POLL_CHAT_ID = process.env.COZY_POLL_CHAT_ID ?? "32499765192@c.us"; // 32479315864-1501838622@g.us
 
 const app = express();
 app.use(express.json());
