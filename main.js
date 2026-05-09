@@ -92,7 +92,42 @@ app.get("/", (req, res) => {
   res.json({ ready: isReady });
 });
 
-app.get("/send-cozy-poll", async (req, res) => {
+app.get("/send-cozy-monday-poll", async (req, res) => {
+  try {
+    if (!isReady) {
+      return res
+        .status(503)
+        .json({ error: "WhatsApp client not ready yet. Scan the QR and wait for 'ready'." });
+    }
+
+    const message = await whatsApp.sendMessage(
+      COZY_POLL_CHAT_ID,
+      new Poll(`🔴⚫ Cozy Monday (vanaf 18u)`, [
+        "Ik zal er voor 19u zijn",
+        "Ik zal er ten laatste om 20u zijn",
+      ])
+    );
+
+    console.log("Cozy Monday poll sent");
+
+    // https://www.calculator.net/time-duration-calculator.html?today=12%2F06%2F2025&starthour2=10&startmin2=00&startsec2=0&startunit2=a&ageat=12%2F07%2F2025&endhour2=10&endmin2=00&endsec2=0&endunit2=p&ctype=2&x=Calculate#twodates
+    const pinDurationInSeconds = 129600;
+    await message.pin(pinDurationInSeconds);
+
+    console.log("Cozy Monday poll pinned");
+
+    res.json({
+      status: "sent",
+      id: message.id.id,
+      timestamp: message.timestamp,
+    });
+  } catch (err) {
+    console.error("Sending Cozy Monday poll failed:", err);
+    res.status(500).json({ error: "Failed to send Cozy Monday poll message", details: String(err.message || err) });
+  }
+});
+
+app.get("/send-cozy-zunday-poll", async (req, res) => {
   try {
     if (!isReady) {
       return res
@@ -122,8 +157,8 @@ app.get("/send-cozy-poll", async (req, res) => {
       timestamp: message.timestamp,
     });
   } catch (err) {
-    console.error("Send failed:", err);
-    res.status(500).json({ error: "Failed to send message", details: String(err.message || err) });
+    console.error("Sending Cozy Zunday poll failed:", err);
+    res.status(500).json({ error: "Failed to send Cozy Zunday poll message", details: String(err.message || err) });
   }
 });
 
